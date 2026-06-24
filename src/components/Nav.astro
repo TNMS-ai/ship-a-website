@@ -1,0 +1,113 @@
+---
+/**
+ * Nav — sticky, always-dark, blurred.
+ *
+ * Edit `navItems` below to match your site's top-level navigation.
+ * The active link is automatically underlined with a gradient rule.
+ */
+import SiteMark from './SiteMark.astro';
+const base = import.meta.env.BASE_URL;
+
+type NavItem = { href: string; label: string };
+
+const navItems: NavItem[] = [
+  { href: base,             label: 'Home' },
+  { href: `${base}about`,   label: 'About' },
+  { href: `${base}blog`,    label: 'Blog' },
+  { href: `${base}contact`, label: 'Contact' },
+];
+
+const { pathname } = Astro.url;
+function isActive(href: string) {
+  if (href === base) return pathname === base || pathname === base.replace(/\/$/, '');
+  return pathname === href || pathname.startsWith(href + '/');
+}
+---
+
+<header
+  class="nav sticky top-0 z-50 backdrop-blur-md bg-ink-950/80 border-b border-ink-800 text-ink-50"
+  data-section="nav"
+>
+  <nav class="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
+    <a href={base} class="inline-flex items-center gap-3" aria-label="Home">
+      <SiteMark size={18} />
+    </a>
+
+    <!-- Desktop nav -->
+    <ul class="hidden md:flex items-center gap-8">
+      {navItems.map((item) => {
+        const active = isActive(item.href);
+        return (
+          <li>
+            <a
+              href={item.href}
+              class:list={[
+                'relative inline-flex items-center text-sm font-medium pb-1 transition-opacity',
+                active ? 'opacity-100' : 'opacity-60 hover:opacity-100',
+              ]}
+            >
+              {item.label}
+              {active && (
+                <span class="nav__active-bar absolute left-0 right-0 -bottom-px h-0.5"></span>
+              )}
+            </a>
+          </li>
+        );
+      })}
+    </ul>
+
+    <!-- Mobile hamburger -->
+    <button
+      id="nav-toggle"
+      class="md:hidden flex flex-col justify-center gap-1.5 w-8 h-8 transition-opacity hover:opacity-70"
+      aria-label="Toggle navigation menu"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+    >
+      <span class="nav-bar block h-0.5 w-6 bg-current transition-all duration-200"></span>
+      <span class="nav-bar block h-0.5 w-6 bg-current transition-all duration-200"></span>
+      <span class="nav-bar block h-0.5 w-6 bg-current transition-all duration-200"></span>
+    </button>
+  </nav>
+
+  <!-- Mobile menu -->
+  <div
+    id="mobile-menu"
+    class="hidden md:hidden border-t border-ink-800 bg-ink-950"
+    role="navigation"
+    aria-label="Mobile navigation"
+  >
+    <ul class="flex flex-col divide-y divide-ink-800">
+      {navItems.map((item) => (
+        <li>
+          <a
+            href={item.href}
+            class:list={[
+              'block px-6 py-4 text-sm font-medium transition-colors',
+              isActive(item.href) ? 'text-ink-50' : 'text-ink-300 hover:text-ink-50',
+            ]}
+          >
+            {item.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</header>
+
+<style>
+  .nav__active-bar {
+    background: linear-gradient(90deg, var(--color-cyan), var(--color-purple));
+    opacity: 0.80;
+  }
+</style>
+
+<script>
+  const toggle = document.getElementById('nav-toggle');
+  const menu   = document.getElementById('mobile-menu');
+
+  toggle?.addEventListener('click', () => {
+    const open = menu?.classList.toggle('hidden') === false;
+    toggle.setAttribute('aria-expanded', String(open));
+  });
+</script>

@@ -1,0 +1,65 @@
+---
+/**
+ * ConsentBanner — GDPR/PECR consent UI.
+ *
+ * Renders server-side; no hydration framework required.
+ * Update the privacy policy href to match your actual privacy page.
+ */
+const base = import.meta.env.BASE_URL;
+---
+
+<div
+  id="consent-banner"
+  role="dialog"
+  aria-label="Cookie consent"
+  class="fixed bottom-0 left-0 right-0 z-50 hidden border-t border-zinc-200 bg-white shadow-lg"
+>
+  <div class="mx-auto flex max-w-5xl flex-col gap-4 px-6 py-4 sm:flex-row sm:items-center sm:justify-between">
+    <p class="text-sm text-zinc-500">
+      We use analytics cookies to understand how visitors use this site. We do not sell your data.
+      <a href={`${base}privacy`} class="underline underline-offset-2 hover:text-zinc-900 transition-colors">
+        Privacy policy
+      </a>
+    </p>
+    <div class="flex flex-shrink-0 gap-3">
+      <button
+        id="consent-decline"
+        type="button"
+        class="text-sm text-zinc-400 hover:text-zinc-700 transition-colors"
+      >
+        Decline
+      </button>
+      <button
+        id="consent-accept"
+        type="button"
+        class="rounded-lg bg-zinc-900 px-4 py-2 text-sm font-semibold text-white hover:bg-zinc-700 transition-colors"
+      >
+        Accept
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    const STORAGE_KEY = 'consent';
+    const banner  = document.getElementById('consent-banner');
+    const accept  = document.getElementById('consent-accept');
+    const decline = document.getElementById('consent-decline');
+
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (!stored) {
+      banner?.classList.remove('hidden');
+    }
+
+    accept?.addEventListener('click', () => {
+      localStorage.setItem(STORAGE_KEY, 'granted');
+      banner?.classList.add('hidden');
+    });
+
+    decline?.addEventListener('click', () => {
+      localStorage.setItem(STORAGE_KEY, 'denied');
+      banner?.classList.add('hidden');
+    });
+  })();
+</script>

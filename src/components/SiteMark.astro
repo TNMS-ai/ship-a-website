@@ -1,0 +1,48 @@
+---
+/**
+ * SiteMark — the brand badge.
+ *
+ * Replace the "BRAND" text with your own wordmark or swap this component
+ * for an <img> pointing to your logo SVG.
+ */
+interface Props {
+  size?: number;
+  label?: string;
+  class?: string;
+}
+
+const { size = 18, label = 'BRAND', class: className } = Astro.props;
+---
+
+<span
+  class:list={['site-mark', className]}
+  role="img"
+  aria-label={label}
+  style={`--site-mark-size: ${size}px`}
+>BRAND</span>
+
+<style>
+  .site-mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    padding: 0 0.36em;
+    border: 1px solid currentColor;
+    border-radius: 0.18em;
+    vertical-align: middle;
+    flex: none;
+    white-space: nowrap;
+
+    font-size: var(--site-mark-size, 18px);
+    font-family: "Inter Tight", "Inter", system-ui, -apple-system, sans-serif;
+    font-weight: 900;
+    font-style: normal;
+    line-height: 1.6;
+    letter-spacing: 0.08em;
+    text-indent: 0.08em;
+    text-transform: uppercase;
+    font-feature-settings: "tnum" 1, "ss01" 1;
+    font-variant-ligatures: none;
+  }
+</style>

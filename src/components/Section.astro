@@ -1,0 +1,100 @@
+---
+/**
+ * Section — the canonical content slab.
+ *
+ * Variants (data-variant):
+ *   • paper    — default light surface
+ *   • sunken   — slightly darker light surface
+ *   • raised   — pure white card row
+ *   • inverse  — dark atmosphere section with optional glow
+ *   • cta      — light call-to-action strip with gradient top rule
+ *
+ * Optional props:
+ *   • kicker      — numbered eyebrow ("01 / Section label")
+ *   • heading     — h2 wrapped in headline display style
+ *   • accentWord  — substring of heading to wrap in halo span
+ *   • accentColor — cyan | purple | magenta | green (defaults to cyan)
+ *   • lede        — supporting paragraph beneath the heading
+ *   • inner       — inner container width: prose | default | wide
+ *   • glow        — boolean; render the glow backdrop
+ *   • id          — anchor id for in-page nav
+ */
+
+interface Props {
+  variant?: 'paper' | 'sunken' | 'raised' | 'inverse' | 'cta';
+  kicker?: { num: string; label?: string };
+  heading?: string;
+  accentWord?: string;
+  accentColor?: 'cyan' | 'purple' | 'magenta' | 'green' | 'multi';
+  lede?: string;
+  inner?: 'prose' | 'default' | 'wide';
+  glow?: boolean;
+  id?: string;
+  class?: string;
+}
+
+const {
+  variant = 'paper',
+  kicker,
+  heading,
+  accentWord,
+  accentColor = 'cyan',
+  lede,
+  inner = 'default',
+  glow = variant === 'inverse',
+  id,
+  class: className,
+} = Astro.props;
+
+const accentClass =
+  accentColor === 'multi' ? 'site-accent' : `site-accent--${accentColor}`;
+const idx = accentWord && heading ? heading.indexOf(accentWord) : -1;
+const before = idx >= 0 ? heading!.slice(0, idx) : heading ?? '';
+const accent = idx >= 0 ? accentWord! : '';
+const rawAfter  = idx >= 0 ? heading!.slice(idx + accentWord!.length) : '';
+const trailingPunc = rawAfter.match(/^[.,!?;:]+/)?.[0] ?? '';
+const after = trailingPunc ? rawAfter.slice(trailingPunc.length) : rawAfter;
+
+const innerClass =
+  inner === 'prose' ? 'section__inner section__inner--prose' :
+  inner === 'wide'  ? 'section__inner section__inner--wide'  :
+                      'section__inner';
+---
+
+<section
+  data-variant={variant}
+  data-section={id}
+  id={id}
+  class:list={['section', className]}
+>
+  {glow && (
+    <div class="site-glow" aria-hidden="true">
+      <span class="site-glow__shape site-glow__shape--cyan-bl"></span>
+      <span class="site-glow__shape site-glow__shape--purple-tr"></span>
+    </div>
+  )}
+
+  <div class={innerClass}>
+    {kicker && (
+      <span class={variant === 'inverse' ? 'site-kicker site-kicker--paper' : 'site-kicker'}>
+        <span class="site-kicker__num">{kicker.num}</span>
+        {kicker.label && <span class="site-kicker__sep">//</span>}
+        {kicker.label && <span>{kicker.label}</span>}
+      </span>
+    )}
+
+    {heading && (
+      <h2 class="site-headline site-headline--display mt-4">
+        {before}{accent && <span class={accentClass}>{accent}{trailingPunc}</span>}{after}
+      </h2>
+    )}
+
+    {lede && (
+      <p class="mt-5 max-w-2xl text-lg leading-relaxed">
+        {lede}
+      </p>
+    )}
+
+    <slot />
+  </div>
+</section>

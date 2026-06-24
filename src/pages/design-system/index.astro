@@ -1,0 +1,49 @@
+---
+import DesignSystemLayout from '../../layouts/DesignSystemLayout.astro';
+import { getCollection } from 'astro:content';
+
+const allEntries = await getCollection('design-system');
+
+type Section = { label: string; items: { title: string; description?: string; slug: string }[] };
+
+const categories: { key: string; label: string }[] = [
+  { key: 'components', label: 'Components' },
+  { key: 'styles', label: 'Styles' },
+  { key: 'templates', label: 'Templates' },
+  { key: 'guides', label: 'Guides' },
+];
+
+const sections: Section[] = categories.map(({ key, label }) => ({
+  label,
+  items: allEntries
+    .filter((e) => e.data.category === key)
+    .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99))
+    .map((e) => ({
+      title: e.data.title,
+      description: e.data.description,
+      slug: e.id,
+    })),
+})).filter((s) => s.items.length > 0);
+---
+
+<DesignSystemLayout title="Design System" description="Browse the ship-a-website design system.">
+  <h1>Design System</h1>
+  <p>
+    The <code>ship-a-website</code> design system — tokens, components, templates, and guides.
+    Everything on this site is built from these primitives.
+  </p>
+
+  {sections.map((section) => (
+    <section>
+      <h2>{section.label}</h2>
+      <ul>
+        {section.items.map((item) => (
+          <li>
+            <a href={`/design-system/${item.slug}/`}>{item.title}</a>
+            {item.description && <span> — {item.description}</span>}
+          </li>
+        ))}
+      </ul>
+    </section>
+  ))}
+</DesignSystemLayout>

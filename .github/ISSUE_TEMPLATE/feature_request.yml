@@ -1,0 +1,50 @@
+name: Feature request
+description: Suggest an improvement or new capability for the template.
+title: "feat: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Before opening a feature request, search existing issues and discussions to avoid duplicates.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+      description: Describe the gap in the current template. Be specific about who encounters it and when.
+      placeholder: When a user forks this template and wants to…
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed solution
+      description: How should the template address this? Code examples welcome.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: What other approaches did you consider, and why did you rule them out?
+    validations:
+      required: false
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Components
+        - Design tokens / styles
+        - SEO system
+        - Pipeline configs (content.ship.yaml / design.ship.yaml)
+        - Scripts
+        - Documentation
+        - CI / tooling
+        - Other
+    validations:
+      required: true

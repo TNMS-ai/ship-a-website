@@ -1,0 +1,52 @@
+---
+/**
+ * PageLayout.astro — content page wrapper.
+ *
+ * Renders: PageHero → slotted body content → CtaStrip.
+ * Use this for inner pages (About, Blog post, etc.).
+ */
+import Layout from './Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import CtaStrip from '../components/CtaStrip.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  headline?: string;
+  accentWord?: string;
+  accentColor?: 'multi' | 'cyan' | 'purple' | 'magenta' | 'green';
+  eyebrow?: string;
+  subheadline?: string;
+  kicker?: string;
+  noIndex?: boolean;
+  showCta?: boolean;
+}
+
+const {
+  title,
+  description,
+  headline,
+  accentWord,
+  accentColor = 'multi',
+  eyebrow,
+  subheadline,
+  kicker,
+  noIndex = false,
+  showCta  = true,
+} = Astro.props;
+---
+
+<Layout title={title} description={description} noIndex={noIndex}>
+  <PageHero
+    headline={headline ?? title}
+    accentWord={accentWord}
+    accentColor={accentColor}
+    eyebrow={eyebrow}
+    subheadline={subheadline}
+    kicker={kicker}
+  />
+
+  <slot />
+
+  {showCta && <CtaStrip />}
+</Layout>

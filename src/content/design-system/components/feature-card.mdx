@@ -1,0 +1,44 @@
+---
+title: "FeatureCard"
+description: "Grid card for feature or benefit listings. Supports icon, accent color variants, and an optional link."
+category: "components"
+status: "stable"
+order: 30
+---
+
+# FeatureCard
+
+A grid-ready card component for feature listings, benefit blocks, and
+capability grids. Four accent color variants. Optional icon and link.
+
+## Usage
+
+```astro
+---
+import FeatureCard from '../components/FeatureCard.astro';
+---
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+  <FeatureCard
+    heading="Zero infrastructure"
+    body="Deploy to any CDN with a single command."
+    icon="⚡"
+    accent="cyan"
+    href="/about/"
+  />
+</div>
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `heading` | `string` | required | Card title |
+| `body` | `string` | required | Card body copy |
+| `icon` | `string` | — | Emoji or SVG string displayed above the heading |
+| `accent` | `'cyan' \| 'purple' \| 'magenta' \| 'green'` | `'cyan'` | Left border accent color |
+| `href` | `string` | — | Makes the card a link; adds hover treatment |
+
+## Accessibility
+
+When `href` is set, the entire card is wrapped in an `<a>` tag. Ensure the
+`heading` is descriptive enough to serve as the link label.

@@ -1,0 +1,238 @@
+version: "1.0"
+
+project:
+  name: "ship-a-website — Content"
+
+pipeline:
+  auto_continue: false
+  agent_backend: copilot
+
+models:
+  opus: claude-opus-4.6
+  sonnet: claude-sonnet-4.6
+  haiku: claude-haiku-4.5
+
+paths:
+  roadmap_dir: roadmap/content
+  specs_dir: specs/content
+
+variables:
+  analytics_attr: "data-analytics-id"
+  site_root: "src/pages"
+  content_root: "src/content"
+
+quality:
+  max_iterations: 2
+  agent: shep.quality-gate
+  model: sonnet
+  on_failure: remediate
+  prompt: |
+    Review the {{stage}} stage output. FAIL only if there are issues
+    that would cause the next pipeline stage to produce incorrect output
+    or if the content does not meet the standards described in AGENTS.md.
+
+    End your response with exactly one of:
+    QUALITY_GATE_RESULT: PASS
+    or:
+    QUALITY_GATE_RESULT: FAIL
+    FINDINGS:
+    - <specific finding>
+  remediation_prompt: |
+    Fix the following quality issues. Make surgical edits only.
+
+    ## Feedback
+    {{feedback}}
+
+stages:
+  - name: audit
+    icon: 🔍
+    display_name: Content Audit
+    model: sonnet
+    prompt: |
+      ## Role
+      You are the content audit agent for a ship-a-website project.
+
+      ## Task
+      Run the SEO and analytics gap analysis for the work item described below.
+
+      WORK_ID: {{work_id}}
+      TITLE: {{title}}
+      DESCRIPTION:
+      {{description}}
+
+      1. Identify the source file(s) that need editing based on the description.
+      2. For each file, run:
+         `node --experimental-strip-types scripts/optimize-content.ts <file>`
+      3. Record every keyword zone gap (title / description / headings / body)
+         and every missing `{{analytics_attr}}` attribute on CTAs.
+      4. Write a gap summary to `specs/content/{{work_id}}/audit.md` with:
+         - Which files are affected
+         - Which keyword gaps exist and in which zones
+         - Which CTAs are missing analytics attributes
+         - Any redirects needed (moved or deleted pages)
+      Do not make any edits in this stage.
+    quality:
+      enabled: true
+      prompt: |
+        Verify that `specs/content/{{work_id}}/audit.md` exists and lists:
+        - The affected files
+        - Specific keyword gaps by zone
+        - CTAs missing analytics attributes
+        An empty gap list is acceptable (means no gaps).
+        FAIL if the file is missing or has no structured sections.
+
+        End your response with exactly one of:
+        QUALITY_GATE_RESULT: PASS
+        or:
+        QUALITY_GATE_RESULT: FAIL
+        FINDINGS:
+        - <specific finding>
+
+  - name: specify
+    icon: 📝
+    display_name: Content Spec
+    model: sonnet
+    prompt: |
+      ## Role
+      You are the content specification agent.
+
+      ## Task
+      Read `specs/content/{{work_id}}/audit.md` and the original work item.
+
+      WORK_ID: {{work_id}}
+      TITLE: {{title}}
+      DESCRIPTION:
+      {{description}}
+
+      Write `specs/content/{{work_id}}/spec.md` that defines:
+      - The exact content changes required (new copy, updated copy, deleted content)
+      - Which keyword zones each change addresses
+      - Which CTAs need `{{analytics_attr}}` attributes added
+      - Which redirects to add to `public/_redirects`
+      - The acceptance criteria: this pipeline run passes when these conditions are met
+
+      Do not make edits to source files in this stage.
+    quality:
+      enabled: true
+      prompt: |
+        Verify `specs/content/{{work_id}}/spec.md` exists and defines:
+        - Specific content changes (not vague instructions)
+        - Acceptance criteria with testable conditions
+        FAIL if the spec is vague or missing acceptance criteria.
+
+        End your response with exactly one of:
+        QUALITY_GATE_RESULT: PASS
+        or:
+        QUALITY_GATE_RESULT: FAIL
+        FINDINGS:
+        - <specific finding>
+
+  - name: edit
+    icon: ✏️
+    display_name: Content Edit
+    model: sonnet
+    prompt: |
+      ## Role
+      You are the content editor. You implement content changes in `.astro` and `.mdx`
+      files using only the design system primitives documented in `src/components/AGENTS.md`
+      and `src/layouts/AGENTS.md`.
+
+      ## Task
+      Read `specs/content/{{work_id}}/spec.md` and implement all specified changes.
+
+      Rules:
+      - Use only existing CSS class names from the design system. Do not add new classes.
+      - Every CTA button must have `data-analytics-id="<event-name>"`.
+      - Outbound marketing links must include UTM parameters.
+      - Never hardcode color values or font names.
+      - After edits, run `npm run lint` to verify no violations.
+    quality:
+      enabled: true
+      command: "npm run lint 2>&1"
+
+  - name: seo
+    icon: 🔑
+    display_name: SEO Verification
+    model: haiku
+    prompt: |
+      ## Role
+      You are the SEO verification agent.
+
+      ## Task
+      1. Run `node --experimental-strip-types scripts/optimize-content.ts` on each edited file.
+      2. Confirm that all Tier 1 keyword gaps identified in the audit are now covered.
+      3. Run `npm run lint:seo` and confirm it passes.
+      4. If any Tier 1 gaps remain, make the minimal edits required to close them.
+    quality:
+      enabled: true
+      command: "npm run lint:seo 2>&1"
+
+  - name: analytics
+    icon: 📊
+    display_name: Analytics Verification
+    model: haiku
+    prompt: |
+      ## Role
+      You are the analytics verification agent.
+
+      ## Task
+      Verify that every CTA button and conversion link in the edited files has:
+      1. `data-analytics-id` attribute with a descriptive event name
+         (format: `<section>-<element>-<action>`)
+      2. Outbound marketing links include UTM parameters
+
+      If any are missing, add them now.
+    quality:
+      enabled: true
+      prompt: |
+        Review the edited files. FAIL if any `<a>` tag that is a CTA button or
+        conversion link is missing a `data-analytics-id` attribute.
+
+        End your response with exactly one of:
+        QUALITY_GATE_RESULT: PASS
+        or:
+        QUALITY_GATE_RESULT: FAIL
+        FINDINGS:
+        - <specific finding>
+
+  - name: redirects
+    icon: 🔀
+    display_name: Redirect Management
+    model: haiku
+    prompt: |
+      ## Role
+      You are the redirect management agent.
+
+      ## Task
+      Read `specs/content/{{work_id}}/audit.md` for any redirects required.
+
+      If any pages were moved or deleted, add redirect entries to `public/_redirects`:
+      ```
+      /old-path    /new-path    301
+      ```
+
+      If no redirects are needed, confirm this and skip.
+    quality:
+      enabled: false
+
+  - name: build
+    icon: 🏗️
+    display_name: Build Verification
+    model: haiku
+    prompt: |
+      ## Role
+      You are the build verification agent.
+
+      ## Task
+      Run `npm run build` and confirm it succeeds with no errors.
+      If there are build errors, fix them before proceeding.
+    quality:
+      enabled: true
+      command: "npm run build 2>&1"
+
+  - name: merge
+    icon: 🚀
+    display_name: Merge
+    type: merge
+    merge:
+      merge_method: squash

@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+# pre-commit: run lint:seo when .astro or .mdx files are staged.
+#
+# Fails (exit 1) if any Tier 1 keyword has zero coverage on its mapped page.
+# All other tier gaps are reported as warnings but do not block the commit.
+#
+# Install: npm run prepare   (sets core.hooksPath to .githooks)
+
+set -euo pipefail
+
+# Ensure Node >= 22 is on PATH (required for --experimental-strip-types).
+# Source nvm if the current node is too old.
+_node_major=$(node --version 2>/dev/null | sed 's/v\([0-9]*\).*/\1/')
+if [ "${_node_major:-0}" -lt 22 ]; then
+  export NVM_DIR="${NVM_DIR:-$HOME/.nvm}"
+  # shellcheck disable=SC1091
+  [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh" --no-use
+  nvm use 22 --silent 2>/dev/null || true
+fi
+
+
+# Check if any content files are staged
+staged=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(astro|mdx|md)$' || true)
+
+if [ -z "$staged" ]; then
+  exit 0
+fi
+
+echo "pre-commit: content files staged — running lint:seo"
+echo ""
+
+# Run the SEO linter
+if ! node --experimental-strip-types scripts/lint-seo.ts; then
+  echo ""
+  echo "pre-commit: lint:seo failed."
+  echo "  Fix Tier 1 keyword gaps before committing, or run:"
+  echo "  node --experimental-strip-types scripts/optimize-content.ts <file>"
+  echo "  for specific suggestions."
+  exit 1
+fi
+
+echo ""
+echo "pre-commit: lint:seo passed."
+exit 0

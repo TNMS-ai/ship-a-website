@@ -1,0 +1,62 @@
+---
+title: "Analytics Guide"
+description: "How the analytics data layer works — required attributes, event naming, and UTM link rules."
+category: "guides"
+status: "stable"
+order: 10
+---
+
+# Analytics
+
+## Data attributes
+
+Every interactive element that drives a business event must have a
+`data-analytics-id` attribute with a descriptive event name.
+
+```html
+<a href="/contact/" data-analytics-id="hero-cta-contact">
+  Contact us
+</a>
+```
+
+Naming convention: `<section>-<element>-<action>`. Examples:
+- `hero-cta-primary`
+- `nav-link-pricing`
+- `footer-cta-subscribe`
+- `feature-card-learn-more`
+
+## UTM links
+
+All outbound links to external destinations should include UTM parameters:
+
+```
+https://external.com/?utm_source=website&utm_medium=referral&utm_campaign=<page>
+```
+
+The content pipeline's `analytics` stage verifies:
+1. Every CTA button has `data-analytics-id`
+2. Outbound marketing links have UTM parameters
+
+## Where the events go
+
+`data-analytics-id` is intentionally agnostic — it's a data attribute, not
+SDK-specific. Wire it to whatever analytics platform you use:
+
+### Google Tag Manager (GTM)
+Create a GTM trigger on "Click — All Clicks" where `data-analytics-id` is set.
+Use `{{Click Element data-analytics-id}}` as the event name.
+
+### Plausible / Fathom
+These auto-capture `data-analytics-id` via their script options
+(`data-goal` for Plausible, `data-fathom-event` for Fathom).
+
+### Custom / console stub
+Add a script in `src/layouts/Layout.astro` during development:
+```html
+<script>
+  document.addEventListener('click', (e) => {
+    const id = e.target.closest('[data-analytics-id]')?.dataset.analyticsId;
+    if (id) console.log('[analytics]', id);
+  });
+</script>
+```

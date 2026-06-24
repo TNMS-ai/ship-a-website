@@ -1,0 +1,90 @@
+---
+/**
+ * Layout.astro — base HTML shell.
+ *
+ * This wraps every page. To customise it:
+ *   1. Edit the <title> / meta pattern to match your brand.
+ *   2. Replace the schema.org Organization block with your own details.
+ *   3. Swap in your actual siteUrl once you have a domain.
+ */
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import ConsentBanner from '../components/ConsentBanner.astro';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+  noIndex?: boolean;
+}
+
+const {
+  title,
+  description = 'A ship-a-website starter — customise this description.',
+  image,
+  noIndex = false,
+} = Astro.props;
+
+const author       = 'Your Brand';
+const brandName    = 'Your Brand';
+const siteUrl      = import.meta.env.SITE_CUSTOM_DOMAIN
+  ? `https://${import.meta.env.SITE_CUSTOM_DOMAIN}`
+  : import.meta.env.SITE ?? 'https://your-domain.com';
+const canonicalUrl = new URL(Astro.url.pathname, siteUrl).toString();
+const siteTitle    = `${title} | ${brandName}`;
+const ogImage      = image ?? `${siteUrl}/og-default.png`;
+---
+
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- Primary -->
+    <title>{siteTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content={author} />
+    {noIndex && <meta name="robots" content="noindex,nofollow" />}
+
+    <!-- Canonical -->
+    <link rel="canonical" href={canonicalUrl} />
+
+    <!-- Open Graph -->
+    <meta property="og:type"        content="website" />
+    <meta property="og:url"         content={canonicalUrl} />
+    <meta property="og:title"       content={siteTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image"       content={ogImage} />
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card"        content="summary_large_image" />
+    <meta name="twitter:title"       content={siteTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image"       content={ogImage} />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Schema.org — replace with your real org details -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": brandName,
+      "url": siteUrl,
+      "sameAs": []
+    })} />
+  </head>
+
+  <body>
+    <a href="#main" class="skip-link">Skip to content</a>
+    <Nav />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+    <ConsentBanner />
+  </body>
+</html>

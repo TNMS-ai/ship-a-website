@@ -1,0 +1,77 @@
+---
+title: "Colors"
+description: "Color palette, token reference, and usage rules for the ink, signal, and neon palettes."
+category: "styles"
+status: "stable"
+order: 20
+---
+
+# Colors
+
+## Palettes
+
+### Ink (neutral)
+
+The `ink` palette is the primary neutral scale — deep graphite grays used for
+backgrounds, text, and borders.
+
+| Token | Tailwind class | Description |
+|---|---|---|
+| `--color-ink-50` | `bg-ink-50` | Near-white — paper backgrounds |
+| `--color-ink-100` | `bg-ink-100` | Light neutral |
+| `--color-ink-200` | `bg-ink-200` | Borders on paper surfaces |
+| `--color-ink-300` | `bg-ink-300` | Muted text |
+| `--color-ink-400` | **BANNED** | Fails WCAG 4.5:1 contrast. Do not use. |
+| `--color-ink-500` | `bg-ink-500` | Mid-tone — dividers, secondary borders |
+| `--color-ink-700` | `bg-ink-700` | Raised surfaces |
+| `--color-ink-800` | `bg-ink-800` | Primary dark background |
+| `--color-ink-900` | `bg-ink-900` | Deep background |
+| `--color-ink-950` | `bg-ink-950` | Darkest surface |
+
+> **`ink-400` is banned everywhere except `global.css`.** The token lint check
+> (`scripts/lint-tokens.sh`) will fail the build if it appears in a component
+> or layout file.
+
+### Signal (accent)
+
+The `signal` palette is the primary brand accent — a warm ochre/gold scale for
+highlights, calls to action, and interactive states.
+
+| Token | Tailwind class | Description |
+|---|---|---|
+| `--color-signal-50` | `text-signal-50` | Near-white ochre tint |
+| `--color-signal-100` | `text-signal-100` | Light accent |
+| `--color-signal-300` | `text-signal-300` | Muted accent |
+| `--color-signal-400` | `text-signal-400` | Hover state accent |
+| `--color-signal-500` | `text-signal-500` | Primary CTA surface |
+| `--color-signal-700` | `text-signal-700` | Pressed state |
+| `--color-signal-900` | `text-signal-900` | Dark accent text on light |
+
+### Neon (glow only)
+
+`cyan`, `purple`, `magenta`, `green` are atmosphere colors.
+**Use only as `box-shadow` halos inside `.site-accent--*` spans.**
+
+| Token | Usage |
+|---|---|
+| `--color-cyan` | `.site-accent--cyan` glow |
+| `--color-purple` | `.site-accent--purple` glow |
+| `--color-magenta` | `.site-accent--magenta` glow |
+| `--color-green` | `.site-accent--green` glow |
+| `.site-glow` + `.site-glow__shape--cyan-bl` | Blurred background atmosphere |
+
+Never use neon colors as text fill, background fill, or border color.
+
+## Semantic surface tokens
+
+These tokens resolve to palette values and should be used in components
+instead of raw palette tokens where possible:
+
+| Token | Light | Dark |
+|---|---|---|
+| `--surface-page` | `ink-50` | `ink-900` |
+| `--surface-raised` | `ink-100` | `ink-800` |
+| `--surface-inverse` | `ink-900` | `ink-50` |
+| `--text-heading` | `ink-950` | `ink-50` |
+| `--text-body` | `ink-800` | `ink-200` |
+| `--text-muted` | `ink-500` | `ink-400` |

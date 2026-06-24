@@ -1,0 +1,59 @@
+---
+title: "Section"
+description: "The primary page section container. Handles background variants, max-width, and padding."
+category: "components"
+status: "stable"
+order: 10
+---
+
+# Section
+
+The `Section` component is the primary layout container for page content.
+It handles surface variants, max-width constraints, and consistent padding.
+
+## Usage
+
+```astro
+---
+import Section from '../components/Section.astro';
+---
+<Section variant="default" eyebrow="LABEL" kicker="01">
+  <h2 slot="headline">Section headline</h2>
+  <p>Section body copy.</p>
+</Section>
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `variant` | `'default' \| 'paper' \| 'sunken' \| 'raised' \| 'inverse' \| 'cta'` | `'default'` | Surface style |
+| `eyebrow` | `string` | — | Small uppercase label above the headline |
+| `kicker` | `string` | — | Mono-spaced numbered section kicker |
+| `id` | `string` | — | Anchor ID for in-page navigation |
+
+## Variants
+
+### `default`
+Dark background (`--surface-page`). Primary section style for most content.
+
+### `paper`
+Light background. Use for content that needs contrast relief on a dark page.
+
+### `sunken`
+Slightly darker than the page surface. Useful for asides and callouts.
+
+### `raised`
+Elevated surface with subtle shadow. Use for cards and featured blocks.
+
+### `inverse`
+Inverts the palette — light text on dark, dark text on light.
+
+### `cta`
+Full-width high-contrast call-to-action band.
+
+## Design tokens used
+
+- `--surface-page`, `--surface-raised`, `--surface-inverse`
+- `--text-heading`, `--text-body`
+- `--container-content` (max-width constraint)

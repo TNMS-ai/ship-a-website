@@ -1,0 +1,36 @@
+---
+title: "Design System"
+description: "The ship-a-website design system — tokens, components, templates, and guides."
+category: "guides"
+order: 0
+---
+
+# Design System
+
+`ship-a-website` ships with a complete, opinionated design system built on
+**Tailwind CSS v4** and a hand-crafted token layer. Everything on this site
+is built from the same palette, type scale, and CSS primitives — no one-off
+styles, no magic numbers.
+
+## What's here
+
+- **[Components](/design-system/components/)** — every reusable UI block with
+  live examples and prop documentation
+- **[Styles](/design-system/styles/)** — color palette, type scale, spacing,
+  motion tokens
+- **[Templates](/design-system/templates/)** — full-page layout templates
+- **[Guides](/design-system/guides/)** — analytics, SEO, deployment
+
+## How to use the design system
+
+All tokens live in `src/styles/global.css`. Components live in `src/components/`.
+Change a token — the whole site updates. Add a component — the design pipeline
+updates this documentation automatically.
+
+## The invariants
+
+1. **Never hardcode a value in a component.** Use a token class or CSS custom property.
+2. **The neon palette (`cyan`, `purple`, `magenta`, `green`) is for glow halos only.**
+   Never apply these to text, backgrounds, or borders.
+3. **BEM is enforced by linting.** Block classes must wrap element classes in the DOM.
+4. **System fonts ship by default.** See `src/styles/AGENTS.md` to add custom fonts.

@@ -1,0 +1,23 @@
+---
+import DesignSystemLayout from '../../layouts/DesignSystemLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('design-system');
+  return entries.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<DesignSystemLayout
+  title={entry.data.title}
+  description={entry.data.description}
+  category={entry.data.category}
+>
+  <Content />
+</DesignSystemLayout>

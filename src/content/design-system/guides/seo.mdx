@@ -1,0 +1,70 @@
+---
+title: "SEO Guide"
+description: "How the SEO system works — keyword registry, content linting, and the optimization workflow."
+category: "guides"
+status: "stable"
+order: 20
+---
+
+# SEO
+
+## The three-layer system
+
+### 1. Keyword registry (`src/seo/keywords.ts`)
+
+Every tracked keyword maps to a source file — the page that should rank for it.
+Keywords have a tier (1–4), associated personas, and adjacent terms that signal
+topical authority.
+
+### 2. Content linter (`npm run lint:seo`)
+
+Runs offline. Fails if any Tier 1 keyword has zero coverage on its mapped page.
+The pre-commit hook runs this automatically on staged `.astro` and `.mdx` files.
+
+### 3. Full SERP audit (`npm run audit:seo`)
+
+Requires `SERPER_API_KEY` in `.env`. Hits the Serper.dev API. Writes a dated
+JSON report to `reports/seo/`. Run manually when you want fresh SERP data.
+
+## The optimization workflow
+
+When a keyword is under-covered on a page:
+
+1. Run the per-file gap analysis:
+   ```bash
+   node --experimental-strip-types scripts/optimize-content.ts src/pages/my-page.astro
+   ```
+2. The output lists every keyword gap by zone: `title`, `description`, `h1`,
+   `body`. It prints copy-paste suggestions for each.
+3. Edit the page — update `title` and `description` in frontmatter first
+   (highest SEO weight), then headings, then body.
+4. Confirm the fix:
+   ```bash
+   npm run lint:seo
+   ```
+
+## Keyword tiers
+
+| Tier | Intent | Action |
+|---|---|---|
+| T1 | Primary commercial — must rank | Enforced. Missing coverage blocks CI. |
+| T2 | Tool comparison — evaluation mode | Monitored. |
+| T3 | Persona pain — problem-aware | Monitored. |
+| T4 | Adjacent / topical authority | Optional. |
+
+## Adding a page to the keyword registry
+
+Open `src/seo/keywords.ts` and add an entry. The `source_file` should be the
+canonical Astro page that targets this keyword.
+
+```ts
+{
+  keyword: "your target keyword",
+  tier: 1,
+  personas: ["Target Persona"],
+  industries: ["Target Industry"],
+  target_page: "Home",
+  source_file: "src/pages/index.astro",
+  adjacent: ["related term", "topical signal"],
+}
+```

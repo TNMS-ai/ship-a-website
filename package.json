@@ -1,0 +1,39 @@
+{
+  "name": "ship-a-website",
+  "type": "module",
+  "version": "0.1.0",
+  "description": "Open-source hello-world website demonstrating how to build and maintain a custom site with TNMS Ship.",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "lint": "npm run lint:css && npm run lint:html && npm run lint:tokens && npm run lint:seo",
+    "lint:css": "stylelint 'src/**/*.css'",
+    "lint:html": "eslint 'src/**/*.astro'",
+    "lint:tokens": "bash scripts/lint-tokens.sh",
+    "lint:seo": "node --experimental-strip-types scripts/lint-seo.ts",
+    "audit:seo": "node --env-file=.env --experimental-strip-types scripts/audit-seo.ts --force",
+    "discover:keywords": "node --experimental-strip-types scripts/discover-keywords.ts",
+    "optimize:content": "node --experimental-strip-types scripts/optimize-content.ts",
+    "prepare": "git config core.hooksPath .githooks"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "^5.0.5",
+    "@astrojs/sitemap": "^3.7.2",
+    "@tailwindcss/typography": "^0.5.19",
+    "@tailwindcss/vite": "^4.3.0",
+    "astro": "^6.3.2",
+    "tailwindcss": "^4.3.0"
+  },
+  "devDependencies": {
+    "@typescript-eslint/parser": "^8.59.4",
+    "eslint": "^10.4.0",
+    "eslint-plugin-astro": "^1.7.0",
+    "stylelint": "^17.12.0",
+    "vite": "^7.0.0"
+  }
+}

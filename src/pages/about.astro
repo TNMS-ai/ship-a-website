@@ -1,0 +1,58 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+---
+
+<PageLayout
+  title="About"
+  description="What this starter is, why it exists, and how to use TNMS Ship to maintain your site."
+  headline="About this template"
+  accentWord="this template"
+  accentColor="cyan"
+  eyebrow="About"
+  subheadline="ship-a-website is a white-label Astro 6 starter wired for governed AI-assisted maintenance via TNMS Ship."
+>
+  <section data-variant="paper">
+    <div class="section__inner section__inner--prose">
+      <div class="prose prose-zinc max-w-none">
+        <h2>What is this?</h2>
+        <p>
+          <strong>ship-a-website</strong> is an open-source starter that shows you how to build and
+          maintain a static marketing site using the
+          <a href="https://tnms.ai">TNMS Ship</a> agentic pipeline. It is not a UI kit — it is a
+          complete, opinionated project skeleton with the guard-rails already installed.
+        </p>
+
+        <h2>What's included</h2>
+        <ul>
+          <li><strong>Astro 6</strong> static site generator — zero client JS by default</li>
+          <li><strong>Tailwind CSS v4</strong> CSS-first config, all tokens in <code>global.css</code></li>
+          <li><strong>BEM enforcement</strong> — ESLint + Stylelint plugins; no inline styles, no raw class names</li>
+          <li><strong>SEO lint gate</strong> — keyword registry, offline Tier 1 coverage check, optional SERP audit</li>
+          <li><strong>Self-hosted fonts</strong> — Inter Variable, Inter Tight Variable, JetBrains Mono</li>
+          <li><strong>Git hooks</strong> — pre-commit SEO gate via <code>.githooks/pre-commit</code></li>
+          <li><strong>Ship pipeline</strong> — <code>AGENTS.md</code> + pipeline config for TNMS Ship</li>
+        </ul>
+
+        <h2>Using TNMS Ship to maintain this site</h2>
+        <p>
+          Once you have the site up and running, you can connect it to TNMS Ship for governed,
+          AI-assisted content and code updates. The pipeline will:
+        </p>
+        <ol>
+          <li>Receive a feature request (new blog post, page update, SEO fix)</li>
+          <li>Run the specify → plan → implement → review → merge stages</li>
+          <li>Gate every PR on the SEO lint check and BEM enforcement</li>
+          <li>Require a human approval before merge to main</li>
+        </ol>
+
+        <h2>Customising</h2>
+        <p>
+          Start with <code>scripts/site.config.ts</code> — set your brand name, URL, and author.
+          Then update the placeholder copy in <code>src/layouts/Layout.astro</code> and
+          <code>src/components/SiteMark.astro</code>. Finally, add your own keywords to
+          <code>src/seo/keywords.ts</code> to activate the SEO lint gate.
+        </p>
+      </div>
+    </div>
+  </section>
+</PageLayout>

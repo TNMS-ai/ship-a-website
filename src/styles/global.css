@@ -1,0 +1,594 @@
+/* =============================================================================
+ * Design System — global.css
+ * Stack: Astro v6 + Tailwind CSS v4
+ *
+ * This is the design token and component primitive layer for ship-a-website.
+ * Customize the @theme block below to match your brand. All components
+ * consume these tokens — change them here and the whole site updates.
+ * ========================================================================== */
+
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+/* -----------------------------------------------------------------------------
+ * 1. Theme tokens (Tailwind v4)
+ * --------------------------------------------------------------------------- */
+@theme {
+  /* --- 1.1 Color: ink (warm graphite neutral — canonical) --- */
+  --color-ink-50:  #FAFAF9;
+  --color-ink-100: #F4F4F2;
+  --color-ink-200: #E7E5E2;
+  --color-ink-300: #D4D2CD;
+  --color-ink-400: #A3A09A;
+  --color-ink-500: #73706B;
+  --color-ink-600: #54524E;
+  --color-ink-700: #3F3D3A;
+  --color-ink-800: #26241F;
+  --color-ink-900: #16140F;
+  --color-ink-950: #0B0A07;
+
+  /* --- 1.2 Color: brand neon palette ---
+     Used as OUTSIDE-the-text glow halos behind emphasized words.
+     Headlines stay solid high-contrast. Never apply to text fill. */
+  --color-cyan:    #00ffff;
+  --color-purple:  #be00ff;
+  --color-magenta: #ff00ff;
+  --color-green:   #39ff14;
+
+  /* --- 1.2.1 Color: signal (ochre) — accent color --- */
+  --color-signal-50:  #FBF6EB;
+  --color-signal-100: #F4E5C2;
+  --color-signal-300: #DDB060;
+  --color-signal-500: #B7821F;
+  --color-signal-600: #9C6E15;
+  --color-signal-700: #7C5710;
+  --color-signal-900: #3F2C07;
+
+  /* --- 1.3 Color: semantic --- */
+  --color-success-50:  #E8F5EE;
+  --color-success-600: #157F4C;
+  --color-warn-50:     #FFF1DE;
+  --color-warn-600:    #A85C00;
+  --color-danger-50:   #FEE9E7;
+  --color-danger-600:  #B42318;
+  --color-info-50:     #E6EFF7;
+  --color-info-600:    #1F5A8A;
+
+  /* --- 1.4 Legacy Tailwind palette overrides (compatibility) --- */
+  --color-zinc-50:  var(--color-ink-100);
+  --color-zinc-100: var(--color-ink-200);
+  --color-zinc-200: var(--color-ink-300);
+  --color-zinc-300: var(--color-ink-300);
+  --color-zinc-400: var(--color-ink-400);
+  --color-zinc-500: var(--color-ink-500);
+  --color-zinc-600: var(--color-ink-600);
+  --color-zinc-700: var(--color-ink-700);
+  --color-zinc-800: var(--color-ink-800);
+  --color-zinc-900: var(--color-ink-900);
+  --color-zinc-950: var(--color-ink-950);
+
+  --color-teal-100: var(--color-signal-100);
+  --color-teal-200: var(--color-signal-100);
+  --color-teal-400: var(--color-signal-300);
+  --color-teal-500: var(--color-signal-500);
+  --color-teal-600: var(--color-signal-600);
+  --color-teal-700: var(--color-signal-700);
+  --color-teal-900: var(--color-signal-900);
+
+  /* Legacy neutral/accent aliases */
+  --color-neutral-50:  var(--color-ink-50);
+  --color-neutral-100: var(--color-ink-100);
+  --color-neutral-200: var(--color-ink-200);
+  --color-neutral-300: var(--color-ink-300);
+  --color-neutral-400: var(--color-ink-400);
+  --color-neutral-500: var(--color-ink-500);
+  --color-neutral-600: var(--color-ink-600);
+  --color-neutral-700: var(--color-ink-700);
+  --color-neutral-800: var(--color-ink-800);
+  --color-neutral-900: var(--color-ink-900);
+  --color-neutral-950: var(--color-ink-950);
+
+  --color-accent-100: var(--color-signal-100);
+  --color-accent-200: var(--color-signal-100);
+  --color-accent-400: var(--color-signal-300);
+  --color-accent-500: var(--color-signal-500);
+  --color-accent-600: var(--color-signal-600);
+  --color-accent-700: var(--color-signal-700);
+  --color-accent-900: var(--color-signal-900);
+
+  /* --- 1.5 Typography --- */
+  /* System font stack — no custom font files required. See public/AGENTS.md
+     for instructions on adding self-hosted fonts. */
+  --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+               "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+               "Liberation Mono", "Courier New", monospace;
+
+  --text-xs:   12px;  --text-xs--line-height:   16px;  --text-xs--letter-spacing:    0.02em;
+  --text-sm:   14px;  --text-sm--line-height:   20px;
+  --text-base: 16px;  --text-base--line-height: 26px;
+  --text-lg:   18px;  --text-lg--line-height:   28px;
+  --text-xl:   20px;  --text-xl--line-height:   30px;  --text-xl--letter-spacing:   -0.005em;
+  --text-2xl:  24px;  --text-2xl--line-height:  32px;  --text-2xl--letter-spacing:  -0.01em;
+  --text-3xl:  30px;  --text-3xl--line-height:  38px;  --text-3xl--letter-spacing:  -0.015em;
+  --text-4xl:  38px;  --text-4xl--line-height:  44px;  --text-4xl--letter-spacing:  -0.02em;
+  --text-5xl:  48px;  --text-5xl--line-height:  54px;  --text-5xl--letter-spacing:  -0.025em;
+  --text-6xl:  64px;  --text-6xl--line-height:  68px;  --text-6xl--letter-spacing:  -0.03em;
+  --text-7xl:  80px;  --text-7xl--line-height:  84px;  --text-7xl--letter-spacing:  -0.035em;
+
+  /* --- 1.6 Radius --- */
+  --radius-none: 0;
+  --radius-xs:   2px;
+  --radius-sm:   4px;
+  --radius-md:   6px;
+  --radius-lg:   10px;
+
+  /* --- 1.7 Containers --- */
+  --container-prose:   68ch;
+  --container-content: 72rem;
+  --container-wide:    84rem;
+
+  /* --- 1.8 Shadows --- */
+  --shadow-rule: 0 1px 0 0 var(--color-ink-200);
+  --shadow-pop:  0 8px 24px -8px rgb(22 20 15 / 0.18),
+                 0 2px 6px  -2px rgb(22 20 15 / 0.10);
+
+  /* --- 1.9 Motion --- */
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-emphasis: cubic-bezier(0.3, 0, 0, 1);
+  --duration-fast: 120ms;
+  --duration-base: 200ms;
+  --duration-slow: 320ms;
+}
+
+/* -----------------------------------------------------------------------------
+ * 2. Semantic surface variables
+ * --------------------------------------------------------------------------- */
+:root {
+  --surface-page:    var(--color-ink-50);
+  --surface-raised:  #FFFFFF;
+  --surface-sunken:  var(--color-ink-100);
+  --surface-inverse: var(--color-ink-900);
+
+  --border-subtle:   var(--color-ink-200);
+  --border-default:  var(--color-ink-300);
+  --border-strong:   var(--color-ink-500);
+
+  --text-heading:    var(--color-ink-900);
+  --text-body:       var(--color-ink-700);
+  --text-muted:      var(--color-ink-500);
+  --text-inverse:    var(--color-ink-50);
+
+  --accent:          var(--color-signal-600);
+  --accent-hover:    var(--color-signal-700);
+  --accent-active:   var(--color-signal-900);
+  --accent-fg:       var(--color-ink-50);
+
+  --focus-ring:      var(--color-signal-500);
+}
+
+.dark,
+:root.dark {
+  --surface-page:    var(--color-ink-950);
+  --surface-raised:  var(--color-ink-900);
+  --surface-sunken:  var(--color-ink-800);
+  --surface-inverse: var(--color-ink-50);
+
+  --border-subtle:   var(--color-ink-800);
+  --border-default:  var(--color-ink-700);
+  --border-strong:   var(--color-ink-500);
+
+  --text-heading:    var(--color-ink-50);
+  --text-body:       var(--color-ink-200);
+  --text-muted:      var(--color-ink-400);
+  --text-inverse:    var(--color-ink-900);
+
+  --accent:          var(--color-signal-300);
+  --accent-hover:    var(--color-signal-100);
+  --accent-active:   var(--color-signal-50);
+  --accent-fg:       var(--color-ink-950);
+}
+
+/* -----------------------------------------------------------------------------
+ * 3. Base
+ * --------------------------------------------------------------------------- */
+@layer base {
+  html {
+    color-scheme: light dark;
+    font-family: var(--font-sans);
+    font-feature-settings: "ss01", "cv11";
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    background-color: var(--color-ink-950);
+    color: var(--text-body);
+    font-size: var(--text-base);
+    line-height: var(--text-base--line-height);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    color: var(--text-heading);
+    font-weight: 700;
+    text-wrap: balance;
+  }
+  h5, h6 {
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-ink-700);
+  }
+
+  p { text-wrap: pretty; }
+
+  code, kbd, samp, pre {
+    font-family: var(--font-mono);
+  }
+  :not(pre) > code {
+    background-color: var(--color-ink-100);
+    color: var(--color-ink-900);
+    padding: 0.1em 0.35em;
+    border-radius: var(--radius-xs);
+    font-size: 0.9em;
+  }
+
+  hr {
+    border: 0;
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  ::selection {
+    background-color: var(--color-signal-100);
+    color: var(--color-ink-900);
+  }
+}
+
+/* 3.1 Prose link styling */
+.prose a {
+  color: var(--accent-hover);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  transition: text-decoration-thickness var(--duration-fast) var(--ease-standard),
+              color var(--duration-fast) var(--ease-standard);
+}
+.prose a:hover {
+  color: var(--accent-active);
+  text-decoration-thickness: 2px;
+}
+
+/* -----------------------------------------------------------------------------
+ * 4. Focus ring
+ * --------------------------------------------------------------------------- */
+@layer base {
+  :where(a, button, [role="button"], input, select, textarea, summary,
+         [tabindex]:not([tabindex="-1"])):focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+    border-radius: inherit;
+  }
+  :focus:not(:focus-visible) { outline: none; }
+}
+
+/* -----------------------------------------------------------------------------
+ * 5. Skip link
+ * --------------------------------------------------------------------------- */
+.skip-link {
+  position: absolute;
+  top: 0; left: 0;
+  transform: translateY(-200%);
+  background: var(--surface-inverse);
+  color: var(--text-inverse);
+  padding: 0.75rem 1rem;
+  border-radius: 0 0 var(--radius-md) 0;
+  z-index: 100;
+  transition: transform var(--duration-base) var(--ease-emphasis);
+}
+.skip-link:focus { transform: translateY(0); }
+
+/* -----------------------------------------------------------------------------
+ * 6. Prose color overrides
+ * --------------------------------------------------------------------------- */
+.prose {
+  --tw-prose-body:          var(--color-ink-700);
+  --tw-prose-headings:      var(--color-ink-900);
+  --tw-prose-links:         var(--color-signal-700);
+  --tw-prose-bold:          var(--color-ink-900);
+  --tw-prose-counters:      var(--color-signal-500);
+  --tw-prose-bullets:       var(--color-ink-400);
+  --tw-prose-hr:            var(--color-ink-200);
+  --tw-prose-quotes:        var(--color-ink-900);
+  --tw-prose-quote-borders: var(--color-signal-300);
+  --tw-prose-captions:      var(--color-ink-500);
+  --tw-prose-code:          var(--color-signal-700);
+  --tw-prose-pre-code:      var(--color-ink-100);
+  --tw-prose-pre-bg:        var(--color-ink-900);
+  --tw-prose-th-borders:    var(--color-ink-200);
+  --tw-prose-td-borders:    var(--color-ink-100);
+}
+
+/* -----------------------------------------------------------------------------
+ * 7. Tabular numerals utility
+ * --------------------------------------------------------------------------- */
+.font-tabular {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum", "ss01";
+}
+
+/* -----------------------------------------------------------------------------
+ * 8. Reduced motion
+ * --------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* =============================================================================
+ * 9. BRAND ATOMS
+ *    Foundational visual primitives: heavy Inter Black headlines with brand
+ *    palette halos. Palette lives BEHIND text as soft rotating glow shapes.
+ *    Never apply neon colors to text fill — they are halos only.
+ * ========================================================================== */
+
+/* --- 9.2 Eyebrow ----------------------------------------------------------- */
+.site-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.site-eyebrow::before {
+  content: "";
+  display: block;
+  width: 32px;
+  height: 1.5px;
+  background: linear-gradient(90deg, var(--color-cyan), var(--color-purple));
+  opacity: 0.55;
+}
+.site-eyebrow--paper { color: var(--color-ink-200); }
+
+/* --- 9.3 Kicker ------------------------------------------------------------ */
+.site-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.site-kicker .site-kicker__num { color: var(--text-heading); font-weight: 700; }
+.site-kicker .site-kicker__sep { opacity: 0.4; }
+.site-kicker--paper {
+  color: var(--color-ink-300);
+}
+.site-kicker--paper .site-kicker__num { color: var(--color-ink-50); }
+
+/* --- 9.4 Headline accent --------------------------------------------------- */
+@keyframes site-accent-rotate {
+  to { transform: rotate(360deg); }
+}
+
+.site-accent {
+  position: relative;
+  display: inline-block;
+  isolation: isolate;
+  color: inherit;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+}
+.site-accent::before {
+  content: "";
+  position: absolute;
+  inset: -0.30em -0.45em;
+  z-index: -1;
+  border-radius: 999px;
+  background: conic-gradient(
+    from 0deg,
+    var(--color-purple),
+    var(--color-magenta),
+    var(--color-cyan),
+    var(--color-green),
+    var(--color-purple)
+  );
+  filter: blur(48px);
+  opacity: 0.30;
+  animation: site-accent-rotate 18s linear infinite;
+  pointer-events: none;
+}
+
+.site-accent--cyan,
+.site-accent--purple,
+.site-accent--magenta,
+.site-accent--green {
+  position: relative;
+  display: inline-block;
+  isolation: isolate;
+  color: inherit;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+}
+.site-accent--cyan::before,
+.site-accent--purple::before,
+.site-accent--magenta::before,
+.site-accent--green::before {
+  content: "";
+  position: absolute;
+  inset: -0.30em -0.45em;
+  z-index: -1;
+  border-radius: 999px;
+  filter: blur(40px);
+  opacity: 0.40;
+  pointer-events: none;
+}
+.site-accent--cyan::before    { background: radial-gradient(circle, var(--color-cyan)    0%, transparent 70%); }
+.site-accent--purple::before  { background: radial-gradient(circle, var(--color-purple)  0%, transparent 70%); }
+.site-accent--magenta::before { background: radial-gradient(circle, var(--color-magenta) 0%, transparent 70%); }
+.site-accent--green::before   { background: radial-gradient(circle, var(--color-green)   0%, transparent 70%); }
+
+/* --- 9.5 Glow backdrop ----------------------------------------------------- */
+.site-glow {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+.site-glow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, rgb(255 255 255 / 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(255 255 255 / 0.04) 1px, transparent 1px);
+  background-size: 80px 80px;
+  mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
+}
+.site-glow .site-glow__shape {
+  position: absolute;
+  width: 540px;
+  height: 540px;
+  border-radius: 999px;
+  filter: blur(120px);
+  opacity: 0.30;
+}
+.site-glow .site-glow__shape--cyan-bl    { left: -120px;  bottom: -120px; background: var(--color-cyan); }
+.site-glow .site-glow__shape--purple-tr  { right: -120px; top: -120px;    background: var(--color-purple); }
+.site-glow .site-glow__shape--magenta-tl { left: -120px;  top: -120px;    background: var(--color-magenta); opacity: 0.20; }
+.site-glow .site-glow__shape--green-br   { right: -120px; bottom: -120px; background: var(--color-green); opacity: 0.18; }
+
+/* --- 9.6 Hairline rule ----------------------------------------------------- */
+.site-rule {
+  display: block;
+  height: 1.5px;
+  border: 0;
+  background: linear-gradient(90deg, var(--color-cyan), var(--color-purple), var(--color-magenta));
+  opacity: 0.45;
+}
+.site-rule--cyan {
+  background: linear-gradient(90deg, transparent, var(--color-cyan), transparent);
+  opacity: 0.55;
+  height: 2px;
+}
+
+/* --- 9.7 Display headline -------------------------------------------------- */
+.site-headline {
+  font-family: var(--font-sans);
+  font-weight: 900;
+  letter-spacing: -0.035em;
+  line-height: 1.02;
+  text-wrap: balance;
+}
+.site-headline--display {
+  font-size: clamp(2.25rem, 4.5vw, 3.75rem);
+}
+.site-headline--hero {
+  font-size: clamp(3rem, 6vw, 5.5rem);
+}
+
+/* --- 9.8 Print: suppress halos -------------------------------------------- */
+@media print {
+  .site-accent::before,
+  .site-accent--cyan::before,
+  .site-accent--purple::before,
+  .site-accent--magenta::before,
+  .site-accent--green::before,
+  .site-glow,
+  .site-glow::before,
+  .site-glow .site-glow__shape {
+    display: none !important;
+  }
+}
+
+/* =============================================================================
+ * 10. STRUCTURAL DEFAULTS
+ * ========================================================================== */
+
+main {
+  display: block;
+  background-color: var(--surface-page);
+  color: var(--text-body);
+}
+
+section[data-variant] {
+  position: relative;
+  isolation: isolate;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  padding-top: clamp(3rem, 6vw, 5rem);
+  padding-bottom: clamp(3rem, 6vw, 5rem);
+}
+section[data-variant="paper"]   { background-color: var(--surface-page); }
+section[data-variant="sunken"]  { background-color: var(--surface-sunken); }
+section[data-variant="raised"]  { background-color: var(--surface-raised); }
+section[data-variant="inverse"] {
+  background-color: var(--color-ink-950);
+  color: var(--color-ink-50);
+  overflow: hidden;
+}
+
+section[data-section="page-hero"] + section[data-variant] {
+  padding-top: clamp(1rem, 2.5vw, 1.75rem);
+}
+section[data-variant="inverse"] :where(h1, h2, h3, h4, h5, h6) {
+  color: var(--color-ink-50);
+}
+section[data-variant="inverse"] :where(p, li) {
+  color: var(--color-ink-200);
+}
+section[data-variant="inverse"] :where(p.site-eyebrow, .site-kicker) {
+  color: var(--color-ink-300);
+}
+
+.section[data-variant] > .section__inner {
+  position: relative;
+  z-index: 1;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 64rem;
+}
+.section[data-variant] > .section__inner--prose {
+  max-width: 48rem;
+}
+.section[data-variant] > .section__inner--wide {
+  max-width: 80rem;
+}
+
+section[data-variant] :where(h1).site-headline,
+section[data-variant] :where(h2).site-headline {
+  font-family: var(--font-sans);
+  font-weight: 900;
+  letter-spacing: -0.035em;
+  line-height: 1.02;
+  text-wrap: balance;
+}
+
+section :where(h2):not(.site-headline):not(.not-prose h2) {
+  font-family: var(--font-sans);
+  font-weight: 800;
+  font-size: clamp(2rem, 3.5vw, 2.75rem);
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  margin-top: 0;
+}
+
+.prose {
+  max-width: 65ch;
+}
+.prose :where(h2) {
+  margin-top: 2.5em;
+  letter-spacing: -0.02em;
+}

@@ -1,0 +1,54 @@
+---
+/**
+ * FeatureCard — content-section card.
+ *
+ * A single-color top border, Inter heading, muted body. Optional icon glyph.
+ */
+interface Props {
+  icon?: string;
+  heading: string;
+  body: string;
+  href?: string;
+  accent?: 'cyan' | 'purple' | 'magenta' | 'green';
+}
+
+const { icon, heading, body, href, accent = 'cyan' } = Astro.props;
+const Tag = href ? 'a' : 'div';
+
+const accentVar =
+  accent === 'cyan'    ? 'var(--color-cyan)'    :
+  accent === 'purple'  ? 'var(--color-purple)'  :
+  accent === 'magenta' ? 'var(--color-magenta)' :
+                         'var(--color-green)';
+---
+
+<Tag
+  href={href}
+  class:list={[
+    'feature-card group relative block bg-ink-50 p-6 transition-colors duration-200 border-t-2',
+    href && 'hover:bg-white cursor-pointer',
+  ]}
+  style={`--feature-card-accent: ${accentVar};`}
+>
+  {icon && (
+    <div
+      class="mb-5 inline-flex h-11 w-11 items-center justify-center rounded-md bg-ink-100 text-ink-900 text-lg"
+      aria-hidden="true"
+    >
+      {icon}
+    </div>
+  )}
+  <h3 class="text-base font-bold text-ink-900 tracking-tight">{heading}</h3>
+  <p class="mt-2 text-sm text-ink-600 leading-relaxed">{body}</p>
+  {href && (
+    <p class="mt-4 text-sm font-medium text-ink-900 opacity-80 group-hover:opacity-100 transition-opacity">
+      Learn more →
+    </p>
+  )}
+</Tag>
+
+<style>
+  .feature-card {
+    border-top-color: var(--feature-card-accent, var(--color-cyan));
+  }
+</style>

@@ -1,0 +1,27 @@
+---
+import Layout from '../layouts/Layout.astro';
+const base = import.meta.env.BASE_URL;
+---
+
+<Layout title="Page not found" noIndex={true}>
+  <section data-variant="inverse" class="section" data-section="page-hero">
+    <div class="site-glow" aria-hidden="true">
+      <span class="site-glow__shape site-glow__shape--cyan-bl"></span>
+      <span class="site-glow__shape site-glow__shape--purple-tr"></span>
+    </div>
+    <div class="section__inner">
+      <p class="site-kicker site-kicker--paper">
+        <span class="site-kicker__num">404</span>
+        <span class="site-kicker__sep">//</span>
+        <span>Page not found</span>
+      </p>
+      <h1 class="site-headline site-headline--display mt-6 max-w-2xl">
+        This page doesn&rsquo;t exist.
+      </h1>
+      <p class="mt-6 text-lg text-ink-200 max-w-xl leading-relaxed">
+        The URL may have changed or the page may have been removed. Try the
+        <a href={base} class="underline underline-offset-2 hover:text-ink-50 transition-colors">homepage</a>.
+      </p>
+    </div>
+  </section>
+</Layout>

@@ -1,0 +1,121 @@
+---
+/**
+ * index.astro — Hello World homepage.
+ *
+ * This page demonstrates the core design system:
+ *   • PageHero with glow halos and accent word
+ *   • Section component with kicker + heading
+ *   • FeatureCard grid
+ *   • CtaStrip
+ *
+ * Replace everything below with your own content.
+ */
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import Section from '../components/Section.astro';
+import FeatureCard from '../components/FeatureCard.astro';
+import CtaStrip from '../components/CtaStrip.astro';
+
+const base = import.meta.env.BASE_URL;
+---
+
+<Layout
+  title="Hello World"
+  description="A ship-a-website starter: Astro 6, Tailwind CSS v4, BEM enforcement, SEO lint gate, and a TNMS Ship-ready pipeline."
+>
+  <PageHero
+    size="hero"
+    headline="Ship a website. Ship it right."
+    accentWord="right."
+    accentColor="multi"
+    subheadline="A white-label Astro 6 + Tailwind v4 starter — with BEM enforcement, a three-tier SEO lint gate, and a TNMS Ship pipeline out of the box."
+    cta={{ label: 'Read the docs', href: `${base}about` }}
+    ctaSecondary={{ label: 'View on GitHub', href: 'https://github.com/your-org/ship-a-website' }}
+  />
+
+  <Section
+    variant="paper"
+    kicker={{ num: '01', label: 'What you get' }}
+    heading="Everything wired up before you type a line."
+    accentWord="wired up"
+    accentColor="cyan"
+    lede="This starter is production-grade from day one. Style enforcement, SEO gates, self-hosted fonts, and a Ship-ready pipeline — so you spend time on content, not config."
+  >
+    <div class="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      <FeatureCard
+        icon="⚡"
+        accent="cyan"
+        heading="Astro 6 + Tailwind v4"
+        body="Static output, zero client JS by default. Tailwind v4 CSS-first config with all design tokens living in a single global.css."
+      />
+      <FeatureCard
+        icon="🎨"
+        accent="purple"
+        heading="Design token system"
+        body="Ink (neutral), signal (accent), and neon halo palette — defined as Tailwind @theme variables and consumed by every component."
+      />
+      <FeatureCard
+        icon="📐"
+        accent="magenta"
+        heading="BEM enforcement"
+        body="Custom ESLint + Stylelint plugins reject non-BEM class names and inline styles at lint time. Architecture is structural, not advisory."
+      />
+      <FeatureCard
+        icon="🔍"
+        accent="green"
+        heading="Three-tier SEO gate"
+        body="Keyword registry → offline lint gate → SERP audit. Tier 1 keyword coverage blocks commits. Full audit available when you add a Serper API key."
+      />
+      <FeatureCard
+        icon="🚀"
+        accent="cyan"
+        heading="Ship pipeline ready"
+        body="AGENTS.md and pipeline configuration included. Hook it up to TNMS Ship and update your site through a governed agentic pipeline."
+      />
+      <FeatureCard
+        icon="🔤"
+        accent="purple"
+        heading="Self-hosted fonts"
+        body="Inter Variable, Inter Tight Variable, and JetBrains Mono loaded locally via font-display: optional. No Google Fonts, no external requests."
+      />
+    </div>
+  </Section>
+
+  <Section
+    variant="sunken"
+    kicker={{ num: '02', label: 'Get started' }}
+    heading="Clone, configure, deploy."
+    accentWord="deploy."
+    accentColor="purple"
+    inner="prose"
+  >
+    <div class="mt-8 prose prose-zinc max-w-none">
+      <ol>
+        <li>
+          <strong>Clone the repo</strong>
+          <pre><code>git clone https://github.com/your-org/ship-a-website my-site
+cd my-site && npm install</code></pre>
+        </li>
+        <li>
+          <strong>Configure your brand</strong> — edit <code>scripts/site.config.ts</code> and replace
+          the placeholder values in <code>src/layouts/Layout.astro</code>.
+        </li>
+        <li>
+          <strong>Run locally</strong>
+          <pre><code>npm run dev</code></pre>
+        </li>
+        <li>
+          <strong>Connect TNMS Ship</strong> — see <a href={`${base}about`}>About</a> for the pipeline setup guide.
+        </li>
+      </ol>
+    </div>
+  </Section>
+
+  <CtaStrip
+    heading="Ready to ship?"
+    accentWord="ship?"
+    accentColor="cyan"
+    lede="Start from this template and deploy a governed, Ship-maintained site in under an hour."
+    cta={{ label: 'Get the template', href: 'https://github.com/your-org/ship-a-website' }}
+  />
+</Layout>

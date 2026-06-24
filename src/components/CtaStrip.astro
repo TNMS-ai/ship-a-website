@@ -1,0 +1,78 @@
+---
+/**
+ * CtaStrip — light call-to-action band placed at the bottom of every page,
+ * just above the Footer. Reads as a transition into the dark footer.
+ */
+import SiteMark from './SiteMark.astro';
+
+interface CtaButton {
+  label: string;
+  href: string;
+  analyticsId?: string;
+}
+
+interface Props {
+  heading?: string;
+  accentWord?: string;
+  accentColor?: 'cyan' | 'purple' | 'magenta' | 'green';
+  lede?: string;
+  cta?: CtaButton;
+  ctaSecondary?: CtaButton;
+}
+
+const base = import.meta.env.BASE_URL;
+
+const {
+  heading      = 'Ready to talk?',
+  accentWord   = 'talk?',
+  accentColor  = 'magenta',
+  lede         = 'Get in touch — we would love to hear from you.',
+  cta          = { label: 'Contact us', href: `${base}contact` },
+  ctaSecondary,
+} = Astro.props;
+
+const idx = heading.indexOf(accentWord);
+const before = idx >= 0 ? heading.slice(0, idx) : heading;
+const accent = idx >= 0 ? accentWord : '';
+const after  = idx >= 0 ? heading.slice(idx + accentWord.length) : '';
+const accentClass = `site-accent--${accentColor}`;
+---
+
+<section data-variant="cta" class="cta-strip" data-section="cta">
+  <div class="section__inner">
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-8">
+      <div class="flex items-center gap-4">
+        <SiteMark size={22} class="opacity-60 hidden sm:inline-flex" />
+        <div>
+          <h2 class="site-headline site-headline--display">
+            {before}{accent && <span class={accentClass}>{accent}</span>}{after}
+          </h2>
+          {lede && <p class="mt-3 text-ink-600 max-w-xl">{lede}</p>}
+        </div>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-3 flex-shrink-0">
+        <a
+          href={cta.href}
+          data-analytics-id={cta.analyticsId ?? 'cta-strip-primary'}
+          class="inline-flex items-center px-5 py-2.5 rounded-md bg-ink-900 text-ink-50 text-sm font-semibold hover:bg-ink-800 transition-colors"
+        >{cta.label}</a>
+        {ctaSecondary && (
+          <a
+            href={ctaSecondary.href}
+            data-analytics-id={ctaSecondary.analyticsId ?? 'cta-strip-secondary'}
+            class="text-sm font-medium text-ink-600 underline underline-offset-2 hover:text-ink-900 transition-colors"
+          >{ctaSecondary.label}</a>
+        )}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta-strip {
+    background-color: var(--surface-page);
+    border-top: 2px solid transparent;
+    border-image: linear-gradient(90deg, var(--color-cyan), var(--color-purple), var(--color-magenta)) 1;
+  }
+</style>

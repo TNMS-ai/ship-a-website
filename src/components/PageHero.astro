@@ -1,0 +1,107 @@
+---
+/**
+ * PageHero — the dark, halo-lit page header used by every page.
+ *
+ * The sticky dark Nav always sits over a dark hero, so the chrome is
+ * consistent regardless of which page you're on.
+ */
+
+interface Props {
+  headline: string;
+  accentWord?: string;
+  accentColor?: 'multi' | 'cyan' | 'purple' | 'magenta' | 'green';
+  eyebrow?: string;
+  subheadline?: string;
+  kicker?: string;
+  size?: 'hero' | 'display';
+  cta?: { label: string; href: string; analyticsId?: string };
+  ctaSecondary?: { label: string; href: string; analyticsId?: string };
+}
+
+const {
+  headline,
+  accentWord,
+  accentColor = 'multi',
+  eyebrow,
+  subheadline,
+  kicker,
+  size = 'display',
+  cta,
+  ctaSecondary,
+} = Astro.props;
+
+const accentClass =
+  accentColor === 'multi' ? 'site-accent' : `site-accent--${accentColor}`;
+const idx = accentWord ? headline.indexOf(accentWord) : -1;
+const before = idx >= 0 ? headline.slice(0, idx) : headline;
+const accent = idx >= 0 ? accentWord! : '';
+const rawAfter  = idx >= 0 ? headline.slice(idx + (accentWord?.length ?? 0)) : '';
+const trailingPunc = rawAfter.match(/^[.,!?;:]+/)?.[0] ?? '';
+const after = trailingPunc ? rawAfter.slice(trailingPunc.length) : rawAfter;
+
+const headlineClass = size === 'hero'
+  ? 'site-headline site-headline--hero mt-4'
+  : 'site-headline site-headline--display mt-4';
+
+const [kickerLead, ...kickerRest] = (kicker ?? '').split('·').map((s) => s.trim());
+const kickerTail = kickerRest.join(' · ');
+---
+
+<section
+  class="section"
+  data-variant="inverse"
+  data-section="page-hero"
+>
+  <div class="site-glow" aria-hidden="true">
+    <span class="site-glow__shape site-glow__shape--cyan-bl"></span>
+    <span class="site-glow__shape site-glow__shape--purple-tr"></span>
+    {size === 'hero' && (
+      <span class="site-glow__shape site-glow__shape--magenta-tl"></span>
+    )}
+  </div>
+
+  <div class="section__inner">
+    <div class="flex items-center justify-between gap-6">
+      {kicker && (
+        <span class="site-kicker site-kicker--paper">
+          <span class="site-kicker__num">{kickerLead}</span>
+          {kickerTail && <span class="site-kicker__sep">·</span>}
+          {kickerTail && <span>{kickerTail}</span>}
+        </span>
+      )}
+    </div>
+
+    <div class={size === 'hero' ? 'mt-8 max-w-4xl' : 'mt-6 max-w-3xl'}>
+      {eyebrow && <p class="site-eyebrow site-eyebrow--paper">{eyebrow}</p>}
+
+      <h1 class={headlineClass}>
+        {before}{accent && <span class={accentClass}>{accent}{trailingPunc}</span>}{after}
+      </h1>
+
+      {subheadline && (
+        <p class="mt-7 max-w-2xl text-lg md:text-xl leading-relaxed">
+          {subheadline}
+        </p>
+      )}
+
+      {(cta || ctaSecondary) && (
+        <div class="mt-9 flex flex-wrap items-center gap-4">
+          {cta && (
+            <a
+              href={cta.href}
+              data-analytics-id={cta.analyticsId ?? 'hero-cta-primary'}
+              class="inline-flex items-center px-5 py-2.5 rounded-md bg-ink-50 text-ink-900 text-sm font-semibold hover:bg-white transition-colors"
+            >{cta.label}</a>
+          )}
+          {ctaSecondary && (
+            <a
+              href={ctaSecondary.href}
+              data-analytics-id={ctaSecondary.analyticsId ?? 'hero-cta-secondary'}
+              class="inline-flex items-center px-5 py-2.5 rounded-md border border-ink-600 text-ink-200 text-sm font-semibold hover:border-ink-500 hover:text-ink-50 transition-colors"
+            >{ctaSecondary.label}</a>
+          )}
+        </div>
+      )}
+    </div>
+  </div>
+</section>

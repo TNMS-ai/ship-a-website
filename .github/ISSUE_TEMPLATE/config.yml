@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: TNMS Ship — get access
+    url: https://tnms.ai
+    about: TNMS Ship is the agentic delivery pipeline this template is built for.
+  - name: Discussions
+    url: https://github.com/tnms-ai/ship-a-website/discussions
+    about: Questions, ideas, and general discussion about the template.

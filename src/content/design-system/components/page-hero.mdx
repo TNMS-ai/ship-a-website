@@ -1,0 +1,54 @@
+---
+title: "PageHero"
+description: "Full-width hero block for the top of a content page. Supports dual CTAs, accent words, and size variants."
+category: "components"
+status: "stable"
+order: 20
+---
+
+# PageHero
+
+The `PageHero` component renders the top-of-page hero section. It handles the
+eyebrow label, headline (with optional neon accent), subheadline, and up to two
+CTA buttons.
+
+Most pages should use `PageLayout` instead of importing `PageHero` directly —
+`PageLayout` composes the hero automatically from props.
+
+## Usage
+
+```astro
+---
+import PageHero from '../components/PageHero.astro';
+---
+<PageHero
+  eyebrow="SECTION"
+  headline="Build something {great}."
+  accentWord="great"
+  accentColor="cyan"
+  subheadline="A brief supporting sentence."
+  ctaPrimary={{ label: "Get started", href: "/about/" }}
+  ctaSecondary={{ label: "Learn more", href: "#features" }}
+  size="hero"
+/>
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `headline` | `string` | required | Hero headline. Wrap accent word in `{braces}`. |
+| `eyebrow` | `string` | — | Small label above headline |
+| `subheadline` | `string` | — | Paragraph below headline |
+| `kicker` | `string` | — | Mono numbered kicker |
+| `accentWord` | `string` | — | Word to wrap in a neon glow halo |
+| `accentColor` | `'cyan' \| 'purple' \| 'magenta' \| 'green'` | `'cyan'` | Halo color |
+| `ctaPrimary` | `{ label, href, analyticsId? }` | — | Primary CTA button |
+| `ctaSecondary` | `{ label, href, analyticsId? }` | — | Secondary (outline) CTA |
+| `size` | `'default' \| 'hero'` | `'default'` | Controls vertical padding |
+
+## Analytics
+
+Both CTA buttons accept an optional `analyticsId` prop that maps to
+`data-analytics-id` on the rendered anchor. Always provide one when the CTA
+drives a conversion event.

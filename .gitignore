@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+.astro/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Editor
+.DS_Store
+.vscode/settings.json
+*.swp
+*.swo
+
+# SEO audit reports
+reports/seo/*.json
+
+# Logs
+npm-debug.log*

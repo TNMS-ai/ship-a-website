@@ -1,0 +1,56 @@
+---
+/**
+ * Footer — closes every page.
+ * Edit the nav columns to match your site structure.
+ */
+import SiteMark from './SiteMark.astro';
+const base = import.meta.env.BASE_URL;
+const year = new Date().getFullYear();
+---
+
+<footer class="relative isolate overflow-hidden bg-ink-950 text-ink-50" data-section="footer">
+  <div class="site-glow" aria-hidden="true">
+    <span class="site-glow__shape site-glow__shape--purple-tr"></span>
+    <span class="site-glow__shape site-glow__shape--cyan-bl"></span>
+  </div>
+
+  <div class="relative z-10 mx-auto max-w-5xl px-6 py-14">
+    <hr class="site-rule mb-10" />
+
+    <div class="flex flex-col md:flex-row items-start justify-between gap-10">
+      <div class="flex items-start gap-5">
+        <SiteMark size={28} />
+        <div>
+          <p class="text-sm font-mono tracking-wide opacity-70">your-site.com</p>
+          <p class="mt-2 text-sm text-ink-300 max-w-xs leading-relaxed">
+            A short description of what your site or product does.
+            Replace this with your own copy.
+          </p>
+        </div>
+      </div>
+
+      <nav class="grid grid-cols-2 gap-10">
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-widest text-ink-300">Site</p>
+          <ul class="mt-3 space-y-2">
+            <li><a href={base}             class="text-sm text-ink-200 opacity-80 hover:opacity-100 transition-opacity">Home</a></li>
+            <li><a href={`${base}about`}   class="text-sm text-ink-200 opacity-80 hover:opacity-100 transition-opacity">About</a></li>
+            <li><a href={`${base}blog`}    class="text-sm text-ink-200 opacity-80 hover:opacity-100 transition-opacity">Blog</a></li>
+            <li><a href={`${base}contact`} class="text-sm text-ink-200 opacity-80 hover:opacity-100 transition-opacity">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-widest text-ink-300">Legal</p>
+          <ul class="mt-3 space-y-2">
+            <li><a href={`${base}privacy`} class="text-sm text-ink-200 opacity-80 hover:opacity-100 transition-opacity">Privacy</a></li>
+            <li><a href={`${base}terms`}   class="text-sm text-ink-200 opacity-80 hover:opacity-100 transition-opacity">Terms</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+
+    <p class="mt-10 text-xs text-ink-500">
+      &copy; {year} Your Organization. All rights reserved.
+    </p>
+  </div>
+</footer>

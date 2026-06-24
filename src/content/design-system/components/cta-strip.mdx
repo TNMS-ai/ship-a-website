@@ -1,0 +1,42 @@
+---
+title: "CtaStrip"
+description: "Full-width call-to-action banner. Appears at the bottom of most pages via PageLayout."
+category: "components"
+status: "stable"
+order: 40
+---
+
+# CtaStrip
+
+A full-width, high-contrast call-to-action strip. `PageLayout` renders this
+automatically at the bottom of every standard page (disable via `showCta: false`).
+
+## Usage
+
+```astro
+---
+import CtaStrip from '../components/CtaStrip.astro';
+---
+<CtaStrip
+  headline="Ready to ship?"
+  subheadline="Fork the repository and start assigning work today."
+  ctaLabel="Get started"
+  ctaHref="https://github.com/your-org/ship-a-website"
+  ctaAnalyticsId="cta-strip-get-started"
+/>
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `headline` | `string` | `"Ready to talk?"` | Strip headline |
+| `subheadline` | `string` | — | Supporting copy |
+| `ctaLabel` | `string` | `"Contact us"` | CTA button label |
+| `ctaHref` | `string` | `"/contact/"` | CTA link target |
+| `ctaAnalyticsId` | `string` | `"cta-strip-primary"` | Analytics event ID |
+
+## Analytics
+
+The CTA button always has a `data-analytics-id` attribute. Set `ctaAnalyticsId`
+to a descriptive event name that identifies where in the funnel this strip lives.
