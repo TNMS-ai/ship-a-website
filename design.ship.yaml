@@ -16,6 +16,21 @@ paths:
   roadmap_dir: roadmap/design
   specs_dir: specs/design
 
+# See content.ship.yaml — same fixture, same stock 4-status Jira board (SHIP-1334).
+roadmap:
+  on_start: in_progress
+  on_complete: done
+  on_fail: to_do
+  statuses:
+    to_do:
+      name: "To Do"
+    in_progress:
+      name: "In Progress"
+    in_review:
+      name: "In Review"
+    done:
+      name: "Done"
+
 variables:
   components_dir: "src/components"
   layouts_dir: "src/layouts"
