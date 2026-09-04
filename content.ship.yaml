@@ -16,6 +16,25 @@ paths:
   roadmap_dir: roadmap/content
   specs_dir: specs/content
 
+# This fixture's Jira project is a stock board (To Do / In Progress / In Review /
+# Done) — no "Selected" or "Backlog" status. Without this block the roadmap policy
+# falls back to the adapter's shep-board default (18 statuses, on_start: selected),
+# which has no transition SWAT can resolve. Declaring the map here, matched to what
+# a default Jira project actually has, is what SHIP-1334 fixed.
+roadmap:
+  on_start: in_progress
+  on_complete: done
+  on_fail: to_do
+  statuses:
+    to_do:
+      name: "To Do"
+    in_progress:
+      name: "In Progress"
+    in_review:
+      name: "In Review"
+    done:
+      name: "Done"
+
 variables:
   analytics_attr: "data-analytics-id"
   site_root: "src/pages"
